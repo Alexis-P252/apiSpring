@@ -1,6 +1,9 @@
 package com.api2.api2.entities;
 
+import de.mkammerer.argon2.Argon2;
+import de.mkammerer.argon2.Argon2Factory;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -19,8 +22,12 @@ public class Usuario implements Serializable {
 
     @Column(nullable=false)
     private String apellido;
+    @NotEmpty
     @Column(nullable=false, unique=true)
     private String email;
+    @NotEmpty
+    @Column(nullable = false)
+    private String password;
 
     @Column(name="create_at")
     @Temporal(TemporalType.DATE)
@@ -29,6 +36,18 @@ public class Usuario implements Serializable {
     @PrePersist
     public void prePersist() {
         createAt = new Date();
+
+        Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);
+        String hash = argon2.hash(1,1024,1, password);
+        this.password = hash;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Long getId() {

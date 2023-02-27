@@ -2,12 +2,16 @@ package com.api2.api2.controllers;
 
 import com.api2.api2.entities.Usuario;
 import com.api2.api2.models.services.IUsuarioService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,10 +56,23 @@ public class UsuarioController {
     }
 
     @PostMapping("/usuarios")
-    public ResponseEntity<?> create(@RequestBody Usuario cliente) {
+    public ResponseEntity<?> create(@Valid @RequestBody Usuario cliente, BindingResult result) {
 
         Usuario newUsuario = null;
         Map<String,Object> response = new HashMap<>();
+
+        if(result.hasErrors()){
+            List<String> errors = new ArrayList<>();
+
+            for(FieldError err: result.getFieldErrors()){
+                errors.add("En el campo: " + err.getField() + " - " +err.getDefaultMessage());
+            }
+            response.put("errors", errors);
+            response.put("msg", "Error en la validacion del usuario");
+            return new ResponseEntity<Map<String,Object>>(response, HttpStatus.BAD_REQUEST);
+
+        }
+
         try {
             newUsuario = usuarioService.save(cliente);
         }catch(DataAccessException e) {
