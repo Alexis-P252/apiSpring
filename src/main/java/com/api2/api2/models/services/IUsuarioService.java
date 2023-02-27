@@ -9,6 +9,10 @@ public interface IUsuarioService {
 
     public Usuario findById(Long id);
 
+    public Usuario findByEmail(String email);
+
     public Usuario save(Usuario user);
     public void deleteById(Long id);
+
+    public boolean verifyLogin(String email, String password);
 }

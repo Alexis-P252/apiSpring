@@ -4,4 +4,7 @@ import com.api2.api2.entities.Usuario;
 import org.springframework.data.repository.CrudRepository;
 
 public interface IUsuarioDao extends CrudRepository<Usuario, Long> {
+
+    boolean existsByEmail(String email);
+    Usuario findByEmail(String email);
 }
