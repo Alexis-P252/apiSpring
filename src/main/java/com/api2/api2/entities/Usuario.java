@@ -33,6 +33,11 @@ public class Usuario implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date createAt;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "fk_domicilio")
+    private Domicilio domicilio;
+
+
     @PrePersist
     public void prePersist() {
         createAt = new Date();

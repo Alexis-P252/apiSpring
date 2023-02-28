@@ -4,8 +4,6 @@ import com.api2.api2.entities.Usuario;
 import com.api2.api2.models.services.UsuarioService;
 import com.api2.api2.utils.JWTUtil;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.apache.coyote.Response;
-import org.hibernate.type.descriptor.jdbc.ObjectNullResolvingJdbcType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
